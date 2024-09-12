@@ -1,0 +1,14 @@
+https://fontawesome.com/download
+
+  <link href="css/fontawesome.css" rel="stylesheet">  
+  <link href="css/solid.css" rel="stylesheet">  
+  <link href="css/brands.css" rel="stylesheet"> 
+
+
+
+
+ <i class="fa-solid fa-people-roof"></i>
+                <i class="fa-solid fa-users"></i>
+                <i class="fa-solid fa-video"></i>
+                <i class="fa-solid fa-tv"></i>
+                <i class="fa-solid fa-database"></i>

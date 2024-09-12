@@ -1,0 +1,17 @@
+npm install ngx-toastr --save
+
+
+	"styles": [ 
+		"src/styles.css",
+		"node_modules/ngx-toastr/toastr.css"
+	],
+
+
+
+
+
+  this.toastr.show("show", "Title");
+    this.toastr.success("success", "Title");
+    this.toastr.info("info", "Title");
+    this.toastr.warning("warning", "Title");
+    this.toastr.error("error", "Title");

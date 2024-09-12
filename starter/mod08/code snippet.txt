@@ -1,0 +1,97 @@
+>Lab01.step4
+
+@if (!submitted){
+<form #courseForm="ngForm" (ngSubmit)="onSubmit(courseForm)">
+    <div class="mb-3">
+        <label for="courseId" class="form-lable">課程ID</label>
+        <input type="text" class="form-control" name="courseId" [(ngModel)]="course().courseId">
+    </div>
+    <button >Submit</button>
+</form>
+}@else {
+<div class="table">
+    <div class="row">
+        <div class="col-4">課程ID: </div>
+        <div class="col-6">{{course().courseId}}</div>
+    </div>
+    <div>
+        <button class="btn btn-primary" >編修</button>
+    </div>
+</div>
+}
+
+
+>也可以試試另一個版本
+@if (!submitted){
+   <div class="mb-1">
+        <div class="input-group">
+            <label class="input-group-text">課程代碼</label>
+            <input type="text" class="form-control" id="courseId" name="courseId"               
+                [(ngModel)]="course().courseId">           
+        </div>
+   </div>
+<button >Submit</button>
+</form>
+}@else {
+<div class="table">
+    <div class="row">
+        <div class="col-4">課程ID: </div>
+        <div class="col-6">{{course().courseId}}</div>
+    </div>
+    <div>
+        <button class="btn btn-primary" >編修</button>
+    </div>
+</div>
+}
+
+###copilot
+
+根據這個資料結構，
+export interface Course {
+    courseId: string;   
+    courseName: string; 
+    hours: number;  
+    startDate?: Date;
+    endDate?: Date;
+    location?: string;
+    staffEmail?: string; 
+    description?: string;
+    isActive?:boolean;
+}
+
+    <div class="mb-3">
+        <label for="courseId" class="form-lable">課程ID</label>
+        <input type="text" class="form-control" name="courseId" [(ngModel)]="course().courseId">
+    </div>
+
+建立輸入的欄位
+
+
+
+###
+<input type="text" class="form-control" id="courseId" name="courseId" 
+            placeholder="例如: U1234 或是 UN789 這樣的格式，字母必須大寫"
+            required pattern="[UN]{1,2}[0-9]{3,4}"
+            [(ngModel)]="course().courseId" #mCourseId="ngModel">
+
+        <input type="text" class="form-control" name="courseName" 
+            required minlength="5" maxlength="40" 
+            placeholder="最少5個字，最多40個字"
+            [(ngModel)]="course().courseName" #mCourseName="ngModel">
+
+        <input type="number" class="form-control" name="hours" 
+            min="7" max="140" step="7" 
+            placeholder="7的倍數，最少7小時，最多140小時"
+            [(ngModel)]="course().hours" #mHours="ngModel">
+
+      <input type="date" class="form-control" name="startDate" 
+            [ngModel]="startDate" (ngModelChange)="startDate=$event" #mStartDate="ngModel">
+
+        <input type="date" class="form-control" name="endDate" [min]="mStartDate.value" 
+                [required]="mStartDate.value" [ngModel]="endDate" (ngModelChange)="endDate=$event" #mEndDate="ngModel">
+
+        <input type="email" class="form-control" name="staffEmail"
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" [(ngModel)]="course().staffEmail"
+            placeholder="例如:John.38&#64;email.com"
+            mStaffEmail="ngModel" #mStaffEmail="ngModel" >
+
