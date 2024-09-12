@@ -1,0 +1,23 @@
+<style>
+  ul li {
+    display: inline;
+  }
+
+  ul li a {
+    padding: 0 5px
+  }
+</style>
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <ul>
+    @for (item of routeList; track $index) {
+    <li>
+      <a [routerLink]="[item.path]">{{item.title}}</a>
+    </li>
+    }
+  </ul>
+</div>
+<hr>
+<router-outlet></router-outlet>

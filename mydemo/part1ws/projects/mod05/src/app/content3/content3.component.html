@@ -1,0 +1,8 @@
+選課: {{choice}}
+<!-- <select [ngModel]='choice' (ngModelChange)='choice=$event'> -->
+<select [(ngModel)]="choice"> 
+<option>Select a course</option>
+@for (item of courses; track $index) {
+<option value="{{item.id}}">{{item.name}}</option>
+}
+</select>

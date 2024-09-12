@@ -1,0 +1,14 @@
+<p>Property & Attribute Binding!</p>
+<img [src]="imgUrl" [width]="width" />
+<img [src]="imgUrl" [attr.width]="width" />
+<!-- 使用svg 繪製同心圓 -->
+<svg [attr.width]="width" [attr.height]="width">
+    <circle cx="100" cy="100" r="50" fill="red" />
+    <circle cx="100" cy="100" r="40" fill="blue" />
+    <circle cx="100" cy="100" r="30" fill="green" />
+</svg>
+
+<div>
+    <input type="text" [value]="width" #inpWidth />
+    <button (click)="setWidth(inpWidth.value)">Set Width</button>
+</div>

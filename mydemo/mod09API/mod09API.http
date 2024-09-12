@@ -1,0 +1,48 @@
+@mod09API_HostAddress = http://localhost:5247
+
+GET {{mod09API_HostAddress}}/wf/
+Accept: application/json
+
+###
+POST {{mod09API_HostAddress}}/wf/
+Content-Type: application/json
+
+{
+    "date": "2024-09-13",
+    "temperatureC": 30,
+    "temperatureF": 85,
+    "summary": "Scorching"
+}
+
+###
+PUT {{mod09API_HostAddress}}/MeetingRooms/6
+Content-Type: application/json
+
+    {
+        "id": 6,
+        "name": "bbb",
+        "size": 100,
+        "projector": true,
+        "tv": false
+    }
+
+
+###
+GET {{mod09API_HostAddress}}/MeetingRooms/6
+
+###
+DELETE {{mod09API_HostAddress}}/MeetingRooms/6
+
+###
+GET {{mod09API_HostAddress}}/MeetingRooms/
+
+###
+POST {{mod09API_HostAddress}}/MeetingRooms/
+Content-Type: application/json
+
+{
+    "name": "12g",
+    "size": 40,
+    "projector": true,
+    "tv": true
+}

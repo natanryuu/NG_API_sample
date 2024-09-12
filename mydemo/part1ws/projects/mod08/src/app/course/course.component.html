@@ -1,0 +1,202 @@
+<style>
+    .ng-valid[required],
+    .ng-valid.required {
+        border-left: 5px solid #42A948;
+        /* green */
+    }
+    .ng-dirty:not(form) {
+        border: 1px solid blue;
+    }
+    .ng-invalid:not(form) {
+        border-left: 5px solid #a94442;
+        /* red */
+    }
+</style>
+
+@if (!submitted){
+    <form (keydown.enter)="$event.preventDefault()"
+    #courseForm="ngForm" (ngSubmit)="onSubmit(courseForm)">
+    <div class="mb-3">
+        <input type="checkbox" class="form-check-input" name="isActive" [(ngModel)]="course().isActive">
+        <label for="isActive" class="form-check-lable">是否啟用</label>        
+    </div>
+    <div class="mb-3">
+        <label for="courseId" class="form-lable">課程ID</label>
+        <input type="text" class="form-control" name="courseId" 
+        placeholder="例如: U1234 或是 UN789 這樣的格式，字母必須大寫"
+        required pattern="[UN]{1,2}[0-9]{3,4}"  [IdIsExist]="isNew"
+        [(ngModel)]="course().courseId" #mCourseId="ngModel">
+        @if(mCourseId.invalid && (mCourseId.dirty || mCourseId.touched)){
+            <div class="alert alert-danger" >
+                @if(mCourseId.errors?.['required']) {
+                    必填
+                }
+                @if(mCourseId.errors?.['pattern']) {
+                    格式錯誤，例如: U1234 或是 UN789 這樣的格式，字母必須大寫
+                }
+                @if (mCourseId.errors?.['IdIsExist']) {
+                    {{ mCourseId.errors?.['IdIsExist'].requiredValue }}
+                }
+        
+            </div>
+            }
+    
+    </div>
+    <div class="mb-3">
+        <label for="courseName" class="form-lable">課程名稱</label>
+        <input type="text" class="form-control" name="courseName" 
+        required minlength="5" maxlength="40" 
+        placeholder="最少5個字，最多40個字"
+        [(ngModel)]="course().courseName" #mCourseName="ngModel">
+        @if (mCourseName.invalid && (mCourseName.dirty || mCourseName.touched)){            
+            <div class="alert alert-danger" >
+                @if(mCourseName.errors?.['required']) {
+                    必填
+                }
+                @if(mCourseName.errors?.['minlength']) {
+                    最少5個字
+                }
+                @if(mCourseName.errors?.['maxlength']) {
+                    最多40個字
+                }
+            </div>
+            }
+
+    </div>
+    <div class="mb-3">
+        <label for="hours" class="form-lable">課程時數</label>
+        <input type="number" class="form-control" name="hours" 
+        min="7" max="140" step="7" 
+        placeholder="7的倍數，最少7小時，最多140小時"
+        [(ngModel)]="course().hours" #mHours="ngModel">
+        @if(mHours.invalid && (mHours.dirty || mHours.touched)){
+            <div class="alert alert-danger" >
+                @if(mHours.errors?.['min']) {
+                    最少7小時
+                }
+                @if(mHours.errors?.['max']) {
+                    最多140小時
+                }
+            </div>
+            }
+    
+    </div>
+    <div class="input-group" ngModelGroup="dateRangeCheck" #dateRangeCheck="ngModelGroup"
+    [CheckEndDate]="['startDate', 'endDate']">
+
+        <div class="mb-3">
+            <label for="startDate" class="form-lable">開始日期</label>
+            <input type="date" class="form-control" name="startDate" 
+            [ngModel]="startDate" (ngModelChange)="startDate=$event" #mStartDate="ngModel">
+
+        </div>
+        <div class="mb-3">
+            <label for="endDate" class="form-lable">結束日期</label>
+            <input type="date" class="form-control" name="endDate" [min]="mStartDate.value" 
+            [required]="mStartDate.value" [ngModel]="endDate" 
+            (ngModelChange)="endDate=$event" #mEndDate="ngModel">
+
+        </div>
+        @if (dateRangeCheck.invalid && (dateRangeCheck.dirty || dateRangeCheck.touched)){
+            <div class="alert alert-danger">
+                
+                @if(dateRangeCheck.errors?.['CheckEndDate']) {               
+               {{ dateRangeCheck.errors?.['CheckEndDate'].requiredValue }}
+                }
+            </div>
+    
+            }
+    </div>
+    <div class="mb-3">
+        <label for="location" class="form-lable">地點</label>
+        <select class="form-select" name="location" [(ngModel)]="course().location">
+            @for(location of locations; track $index){
+            <option [value]="location">{{ location }}</option>
+            }            
+        </select>       
+    </div>
+    <div class="mb-3">
+        <label for="staffEmail" class="form-lable">員工郵件</label>
+        <input type="email" class="form-control" name="staffEmail"
+        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" [(ngModel)]="course().staffEmail"
+        placeholder="例如:John.38&#64;email.com"
+        mStaffEmail="ngModel" #mStaffEmail="ngModel" >
+        @if(mStaffEmail.invalid && (mStaffEmail.dirty || mStaffEmail.touched)){
+            <div class="alert alert-danger" >
+                @if(mStaffEmail.errors?.['pattern']) {
+                    格式錯誤，例如:John.38&#64;email.com
+                }
+            </div>
+            }
+    
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-lable">課程描述</label>
+        <textarea class="form-control" name="description" [(ngModel)]="course().description"></textarea>
+    </div>
+
+    <div>
+        <button type="submit" [disabled]="courseForm.invalid"
+            [ngClass]="{'btn':true,  'btn-success': courseForm.valid, 'btn-warning': courseForm.invalid}">
+            Submit</button>
+        <button type="button" class="btn btn-primary" (click)="newCourse()">新增</button>
+    </div>
+
+
+        <div style="border-bottom:1px solid black;background-color : gainsboro;">
+            courseForm.status: {{courseForm.status}}
+        </div>
+        <div style="border-bottom:1px solid black;background-color : gainsboro;">
+            courseForm.value: {{courseForm.value | json}}
+        </div>
+        <div style="border-bottom:1px solid black;background-color : gainsboro;">
+            course(): {{course() | json}}
+        </div>
+    
+    </form>
+    }@else {
+        <div class="table">
+            <div class="row">
+                <div class="col-4">開放報名: </div>
+                <div class="col-6"><input type="checkbox" class="form-check-input" name="isActive" readonly [(ngModel)]="course().isActive"></div>
+            </div>
+            <div class="row">
+                <div class="col-4">課程ID: </div>
+                <div class="col-6">{{course().courseId}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">名稱: </div>
+                <div class="col-6">{{course().courseName}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">時數: </div>
+                <div class="col-6">{{course().hours}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">開始日期: </div>
+                <div class="col-6">{{course().startDate | date:'yyyy-MM-dd'}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">結束日期: </div>
+                <div class="col-6">{{course().endDate | date:'yyyy-MM-dd'}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">地點: </div>
+                <div class="col-6">{{course().location}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">員工郵件: </div>
+                <div class="col-6">{{course().staffEmail}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">說明: </div>
+                <div class="col-6">{{course().description}}</div>
+            </div>
+        
+            <div>
+                <button class="btn btn-primary" (click)="submitted=false">編修</button>
+            </div>
+        </div>
+        
+    }
+    

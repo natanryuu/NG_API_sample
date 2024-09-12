@@ -1,0 +1,49 @@
+<div>
+    <input type="text" #summaryID>
+    <button (click)="GetSummary(summaryID.value)">
+        取得天氣摘要
+    </button>
+    <p>{{summary}}</p>
+</div>
+
+<div>
+    <button (click)="GetWeatherForecast()">
+        Get WeatherForecast
+    </button>
+    @if (wfList.length>0) {
+    <div class="table border">
+        <div class="row">
+            <div class="col">Date</div>
+            <div class="col">攝氏</div>
+            <div class="col">華氏</div>
+            <div class="col">摘要</div>
+        </div>
+        @for (item of wfList; track $index) {
+        <div class="row border">
+            <div class="col">{{item.date | date: 'yyyy/MM/dd'}}</div>
+            <div class="col">{{item.temperatureC}}</div>
+            <div class="col">{{item.temperatureF}}</div>
+            <div class="col">{{item.summary}}</div>
+        </div>
+        }
+    </div>
+    }
+</div>
+<div class="border">
+    <button (click)="GetYMDBody()">
+        回傳 body 
+    </button>
+    <div>{{bodyResult}}</div>
+</div>
+<div class="border">
+    <button (click)="GetYMDResp()">
+        回傳 response 
+    </button>
+    <div>{{respResult}}</div>
+</div>
+<div class="border">
+    <button (click)="PostWF()">
+        PostWF
+    </button>
+    <div>{{postResult}}</div>
+</div>
